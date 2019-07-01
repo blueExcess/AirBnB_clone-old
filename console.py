@@ -3,6 +3,7 @@
 
 
 import cmd, sys
+import models.BaseModel
 
 
 
@@ -11,11 +12,13 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbtn) '
 
     def do_quit(self, args):
-        """Quit the console and return to shell."""
+        """Quit the console and return to shell.
+        Does include a newline before quitting."""
         return True
 
     def do_EOF(self, args):
-        """Will exit command line when reaches EOF."""
+        """Will exit command line when reaches EOF.
+        Does not print a newline."""
         return True
 
     def emptyline(self):
@@ -25,7 +28,14 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """Create a new object of specified class, save to JSON
         and print out the id of new object."""
-        pass
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args not in model_names:
+            print("** class doesn't exist **")
+        else:
+            a = BaseModel()
+            a.save()
+            print(a.id)
 
     def do_show(self, args):
         """Prints the class name and id."""
@@ -34,6 +44,7 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, args):
         """Deletes the instance indicated and removes it from
         the JSON file."""
+        pass
 
     def do_all(self, args):
         """Print representation of all instances, or if given
@@ -45,6 +56,9 @@ class HBNBCommand(cmd.Cmd):
         by either adding or updating given attribute. Also
         saves changes to JSON file."""
         pass
+
+
+model_names = ['BaseModel', 'CityModel']
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
