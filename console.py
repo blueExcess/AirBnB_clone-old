@@ -2,8 +2,16 @@
 """Console for running AirBnB clone."""
 
 
-import cmd, sys
+import cmd, sys, shlex
+from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
+from models.city import City
+from models.state import State
+from models.user import User
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
+from models.__init__ import storage
 
 
 
@@ -39,7 +47,28 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, args):
         """Prints the class name and id."""
-        pass
+        args = shlex.split(args)
+        cls, idx  = args[0], args[1]
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        elif cls not in model_names:
+            print("** class doesn't exist **")
+            return
+        elif len(args) != 2:
+            print("** instance id missing **")
+            return
+
+        storage = FileStorage()
+        storage.reload()
+        obj_list = storage.all()
+        key = cls + '.' + idx
+
+        try:
+            obj = obj_list[key]
+            print(obj)
+        except KeyError:
+            print("** no instance found **")
 
     def do_destroy(self, args):
         """Deletes the instance indicated and removes it from
@@ -58,7 +87,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
 
-model_names = ['BaseModel', 'CityModel']
+model_names = ['BaseModel', 'UserModel', ']
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
