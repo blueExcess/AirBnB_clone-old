@@ -111,7 +111,7 @@ class HBNBCommand(cmd.Cmd):
 
         for k, v in objs.items():
             if len(args) != 0:
-                if type(v) is in model_names:
+                if type(v) in model_names:
                     obj_list.append(v.__str__())
             else:
                 obj_list.append(v.__str__())
