@@ -2,7 +2,6 @@
 """
 BaseModel Class of Models Module
 """
-
 from uuid import uuid4
 from datetime import datetime
 import json
@@ -27,11 +26,12 @@ class BaseModel:
                                                     '%Y-%m-%dT%H:%M:%S.%f')
             else:
                 if key != '__class__':
-                    setattr(self, key, kwargs[key])
+                    setattr(self, key, kwargs['__class__'])
 
         self.id = str(uuid4())
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
+        models.storage.new(self)
 
     def __str__(self):
         return "[{}] ({}) {}".format(self.__class__.__name__,
@@ -40,18 +40,23 @@ class BaseModel:
     def save(self):
         """ update instance attribute with current datetime """
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
-        """ Returns a dictionary w/ Keys/vals of __dict__ instance
+        """
+        Returns a dictionary w/ Keys/vals of __dict__ instance
         Return: dictionary w/ all keys/values
         """
-        self.__dict__.update({'__class__': '{}'.format
-                              (self.__class__.__name__)})
-        for key in self.__dict__:
+        dc = self.__dict__.copy()
+        dc.update({'__class__': '{}'.format
+                   (self.__class__.__name__)})
+
+        for key in dc:
             if key == 'id':
-                self.__dict__[key] = self.id
+                dc[key] = self.id
             elif key == 'created_at':
-                self.__dict__[key] = self.created_at.isoformat()
+                dc[key] = self.created_at.isoformat()
             elif key == 'updated_at':
-                self.__dict__[key] = self.updated_at.isoformat()
-            return self.__dict__
+                dc[key] = self.updated_at.isoformat()
+
+        return dc
