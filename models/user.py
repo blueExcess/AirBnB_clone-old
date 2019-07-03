@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ class user """
-from model.base_models import BaseModel
+from models.base_model import BaseModel
 
 
 class User(BaseModel):
@@ -8,4 +8,4 @@ class User(BaseModel):
     email = ""
     password = ""
     first_name = ""
-    last_name ""
+    last_name = ""
