@@ -120,7 +120,39 @@ class HBNBCommand(cmd.Cmd):
         """Updates an instance based on the class name and ID
         by either adding or updating given attribute. Also
         saves changes to JSON file."""
-        pass
+        args = shlex.split(args)
+        storage = FileStorage()
+        storage.reload()
+        cls, idx, att = args[0], args[1], args[2]
+        instance = cls + '.' + idx
+        obj_dict = storage.all()
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        elif cls not in model_names:
+            print("** class doesn't exist **")
+            return
+        elif len(args) == 1:
+            print("** instance id missing **")
+            return
+        elif instance not in obj_dict.keys():
+            print("** no instance found **")
+            return
+        elif len(args) == 2:
+            print("** attribute name missing **")
+            return
+        elif len(args) == 3:
+            print("** value missing **")
+            return
+
+        try:
+            attr_type = type(getattr(object_value, att))
+            atty = attr_type(args[3])
+        except AttributeError:
+            pass
+        obj_v = obj_dict[instance]
+        setattr(obj_v, att, atty)
+        obj_v.save()
 
     def default(self, args):
         """change default error messages."""
