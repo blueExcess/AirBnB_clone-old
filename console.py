@@ -122,6 +122,22 @@ class HBNBCommand(cmd.Cmd):
         saves changes to JSON file."""
         pass
 
+    def default(self, args):
+        """change default error messages."""
+        coms = {'update': self.do_update, 'all': self.do_all,
+                'create': self.do_create, 'show': self.do_show,
+                'destroy': self.do_destroy}
+        args = (args.replace("(", ".").replace(")", ".")
+                    .replace('"', "").replace(",", ""))
+
+        try:
+            args = args.split(".")
+            entry = args[0] + " " + args[2]
+            function = coms[args[1]]
+            function(entry)
+        except:
+            print("*** Unknown syntax:", args[0])
+
 
 model_names = ['BaseModel', 'User', 'State', 'City',
                'Amenity', 'Place', 'Review']
