@@ -8,6 +8,7 @@ import json
 from models.base_model import BaseModel
 import os.path
 
+
 class FileStorage:
     """
     class FileStorage to serialize
@@ -17,7 +18,6 @@ class FileStorage:
 
     __file_path = "file.json"
     __objects = {}
-
 
     def all(self):
         """ Returns the dictionay objects"""
@@ -44,4 +44,4 @@ class FileStorage:
             with open(FileStorage.__file_path, 'rt') as myFile:
                 my_dict = json.load(myFile)
             for key, value in my_dict.items():
-                 my_dict[key] = eval(value['__class__'])(**value)
+                my_dict[key] = eval(value['__class__'])(**value)
