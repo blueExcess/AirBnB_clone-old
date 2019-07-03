@@ -41,7 +41,7 @@ class HBNBCommand(cmd.Cmd):
         elif args not in model_names:
             print("** class doesn't exist **")
         else:
-            a = BaseModel()
+            a = args()
             a.save()
             print(a.id)
 
@@ -73,7 +73,27 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, args):
         """Deletes the instance indicated and removes it from
         the JSON file."""
-        pass
+        args = shlex.split(args)
+        cls, idx = args[0], args[1]
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        elif cls not in model_names:
+            print("** class doesn't exist **")
+            return
+        elif len(args) != 2:
+            print("** instance id missing **")
+            return
+
+        storage = FileStorage()
+        storage.reload()
+        obj_list = storage.all()
+        key = cls + '.' + idx
+
+        if key in obj_list:
+            del obj_list[key]
+        else:
+            print("** no instance found **")
 
     def do_all(self, args):
         """Print representation of all instances, or if given
@@ -87,7 +107,8 @@ class HBNBCommand(cmd.Cmd):
         pass
 
 
-model_names = ['BaseModel', 'UserModel', ']
+model_names = ['BaseModel', 'User', 'State', 'City',
+               'Amenity', 'Place', 'Review']
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
