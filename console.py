@@ -61,11 +61,11 @@ class HBNBCommand(cmd.Cmd):
 
         storage = FileStorage()
         storage.reload()
-        obj_list = storage.all()
+        obj_dict = storage.all()
         key = cls + '.' + idx
 
         try:
-            obj = obj_list[key]
+            obj = obj_dict[key]
             print(obj)
         except KeyError:
             print("** no instance found **")
@@ -87,18 +87,34 @@ class HBNBCommand(cmd.Cmd):
 
         storage = FileStorage()
         storage.reload()
-        obj_list = storage.all()
+        obj_dict = storage.all()
         key = cls + '.' + idx
 
-        if key in obj_list:
-            del obj_list[key]
+        if key in obj_dict:
+            del obj_dict[key]
         else:
             print("** no instance found **")
 
     def do_all(self, args):
         """Print representation of all instances, or if given
         an argument, all of that class type."""
-        pass
+        obj_list = []
+        storage = FileStorage()
+        storage.reload()
+        objs = storage.all()
+
+        if len(args) != 0:
+            if args not in model_names:
+                print("** class doesn't exist **")
+                return
+
+        for k, v in objs.items():
+            if len(args) != 0:
+                if type(v) is in model_names:
+                    obj_list.append(v.__str__())
+            else:
+                obj_list.append(v.__str__())
+        print(obj_list)
 
     def do_update(self, args):
         """Updates an instance based on the class name and ID
