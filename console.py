@@ -2,7 +2,9 @@
 """Console for running AirBnB clone."""
 
 
-import cmd, sys, shlex
+import cmd
+import sys
+import shlex
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.city import City
@@ -12,7 +14,6 @@ from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
 from models.__init__ import storage
-
 
 
 class HBNBCommand(cmd.Cmd):
@@ -48,7 +49,7 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, args):
         """Prints the class name and id."""
         args = shlex.split(args)
-        cls, idx  = args[0], args[1]
+        cls, idx = args[0], args[1]
         if len(args) == 0:
             print("** class name missing **")
             return
