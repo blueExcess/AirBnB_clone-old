@@ -42,23 +42,29 @@ class HBNBCommand(cmd.Cmd):
         elif args not in model_names:
             print("** class doesn't exist **")
         else:
-            a = args()
+            args = shlex.split(args)
+            a = eval(args[0])()
             a.save()
             print(a.id)
 
     def do_show(self, args):
         """Prints the class name and id."""
         args = shlex.split(args)
-        cls, idx = args[0], args[1]
         if len(args) == 0:
             print("** class name missing **")
             return
-        elif cls not in model_names:
+        elif args[0] not in model_names:
             print("** class doesn't exist **")
             return
         elif len(args) != 2:
             print("** instance id missing **")
             return
+        cls, idx = args[0], args[1]
+        # try:
+        #     eval(args[0])
+        # except NameError:
+        #     print("** class doesn't exist **")
+        #     return
 
         storage = FileStorage()
         storage.reload()
@@ -75,17 +81,18 @@ class HBNBCommand(cmd.Cmd):
         """Deletes the instance indicated and removes it from
         the JSON file."""
         args = shlex.split(args)
-        cls, idx = args[0], args[1]
+
         if len(args) == 0:
             print("** class name missing **")
             return
-        elif cls not in model_names:
+        elif args[0] not in model_names:
             print("** class doesn't exist **")
             return
         elif len(args) != 2:
             print("** instance id missing **")
             return
 
+        cls, idx = args[0], args[1]
         storage = FileStorage()
         storage.reload()
         obj_dict = storage.all()
@@ -124,19 +131,20 @@ class HBNBCommand(cmd.Cmd):
         args = shlex.split(args)
         storage = FileStorage()
         storage.reload()
-        cls, idx, att = args[0], args[1], args[2]
-        instance = cls + '.' + idx
-        obj_dict = storage.all()
+
         if len(args) == 0:
             print("** class name missing **")
             return
-        elif cls not in model_names:
+        elif args[0] not in model_names:
             print("** class doesn't exist **")
             return
         elif len(args) == 1:
             print("** instance id missing **")
             return
-        elif instance not in obj_dict.keys():
+
+        cls, idx, att = args[0], args[1], args[2]
+        instance = cls + '.' + idx
+        if instance not in obj_dict.keys():
             print("** no instance found **")
             return
         elif len(args) == 2:
@@ -146,11 +154,15 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return
 
+        obj_dict = storage.all()
+
+
         try:
             attr_type = type(getattr(object_value, att))
             atty = attr_type(args[3])
         except AttributeError:
             pass
+
         obj_v = obj_dict[instance]
         setattr(obj_v, att, atty)
         obj_v.save()
