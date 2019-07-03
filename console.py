@@ -18,7 +18,7 @@ from models.__init__ import storage
 
 class HBNBCommand(cmd.Cmd):
     """Class to create console for project."""
-    prompt = '(hbtn) '
+    prompt = '(hbnb) '
 
     def do_quit(self, args):
         """Quit the console and return to shell.
