@@ -119,7 +119,6 @@ class HBNBCommand(cmd.Cmd):
         for k, v in objs.items():
             if len(args) != 0:
                 ka = k.split(".")
-                print(ka)
                 if ka[0] in model_names:
                     obj_list.append(v.__str__())
             else:
