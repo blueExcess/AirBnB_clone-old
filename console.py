@@ -98,10 +98,11 @@ class HBNBCommand(cmd.Cmd):
         obj_dict = storage.all()
         key = cls + '.' + idx
 
-        if key in obj_dict:
+        try:
             del obj_dict[key]
-        else:
+        except KeyError:
             print("** no instance found **")
+        storage.save()
 
     def do_all(self, args):
         """Print representation of all instances, or if given
