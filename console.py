@@ -158,7 +158,6 @@ class HBNBCommand(cmd.Cmd):
 
         obj_dict = storage.all()
 
-
         try:
             attr_type = type(getattr(object_value, att))
             atty = attr_type(args[3])

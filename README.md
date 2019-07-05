@@ -103,3 +103,31 @@ Also, we strongly encourage you to use branches and pull requests on Github - it
 
 ## Author
 * **Nathan Petersen** - [blueExcess](https://github.com/blueExcess)
+
+
+
+## Console
+* How to start:
+	To begin, please run the file "console.py". `./console.py`
+### Commands:
+* quit
+	No arguments - will exit the console. `quit`
+* help [command]
+	Can run with no arguments to show what commands there are. Running with an argument (a command) will give you details about that command.
+	`help` and `help quit`
+* create <model_name>
+	Will create a new instance of the indicated model, and then print the id of the new object. Accepted models are: BaseModel, User, State, City, \
+Amenity, Place, and Review.
+	`create BaseModel`
+* show <model_name, id>
+	Will show indicated model.
+	`show BaseModel 8173-i3880-andn83`
+* destroy <model_name, id>
+	Will delete the indicated object.
+	`destroy Amenity 9182-8373-8177393`
+* all [model_name]
+	Print all currently existing objects to output. If given a model_name, will print all current instances of indicated model.
+	`all` or `all User`
+* update <model_name, id, attribute [value (str, int, or float)]>
+	Update the indicated object with the given attribute, which will have the value indicated.
+	`update BaseModel 1234-1234-1234 email "aibnb@holbertonschool.com"`
